@@ -1,5 +1,3 @@
-"use client"
-
 import { useState } from "react";
 import ClickButton from "@/app/components/ClickButton";
 import Input from "@/app/components/Input";
@@ -29,6 +27,12 @@ const TodoForm = ({
                 value={inputValue}
                 onChange={setInputValue}
                 placeholder="Enter Todo..." />
+
+            <TagsInput
+                tags={tags}
+                autoCompleteTags={autoCompleteTags}
+                onChangeTags={setTags}
+                placeholder="Enter Tags..." />
 
             <ClickButton
                 label="Add"
