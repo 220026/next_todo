@@ -1,35 +1,37 @@
 import { Todo } from "../models/Todo";
-import path from "path";
 
-const TODO_JSON_FILE = process.env.TODO_JSON_FILE || "";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "";
 
-const readTodosFromFile = (): Todo[] => {
+export const getTodos = async () => {
+    //TODO: API URL設定
+    const url = `${API_URL}/api/todo/get`;
     try {
-        const filePath = path.join(process.cwd(), TODO_JSON_FILE);
-        const data = require(filePath);
-        return JSON.parse(data);
+        const response = await fetch(url);
+        if (response.ok) {
+            return await response.json();
+        }
     } catch (error) {
-        console.error("Error reading todos from file:", error);
-        return [];
+        console.error(error)
     }
 }
 
-const writeTodosToFile = (todos: Todo[]) => {
+export const postTodos = async (todos: Todo[]) => {
+    if (!todos) return;
+    const url = `${API_URL}/api/todo/add`;
+    const data = JSON.stringify(todos);
+    //TODO: API URL設定
     try {
-        const filePath = path.join(process.cwd(), TODO_JSON_FILE);
-        const jsonData = JSON.stringify(todos);
-        require("fs").writeFileSync(filePath, jsonData, "utf8");
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: data
+        });
+        if (response.ok) {
+            return await response.json();
+        }
     } catch (error) {
-        console.error("Error writing todos to file:", error);
+        console.error(error)
     }
-}
-
-export const getTodos = async (): Promise<Todo[]> => {
-    // ファイルからTODOデータを読み取る
-    return readTodosFromFile();
-}
-
-export const postTodos = async (todos: Todo[]): Promise<void> => {
-    // ファイルにTODOデータを書き込む
-    writeTodosToFile(todos);
 }
