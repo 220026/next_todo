@@ -1,10 +1,9 @@
 import { Todo } from "../models/Todo";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "";
+const API_URL = "http://localhost:3000";
 
 export const getTodos = async () => {
-    //TODO: API URL設定
-    const url = API_URL + "/todos";
+    const url = `${API_URL}/api/todo/get`;
     try {
         const response = await fetch(url);
         if (response.ok) {
@@ -17,10 +16,8 @@ export const getTodos = async () => {
 
 export const postTodos = async (todos: Todo[]) => {
     if (!todos) return;
-    //TODO: API URL設定
-    const url = API_URL + "/todos";
+    const url = `${API_URL}/api/todo/get`;
     const data = JSON.stringify(todos);
-    //TODO: APIで保存し、データを返す
     try {
         const response = await fetch(url, {
             method: 'POST',
